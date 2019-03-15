@@ -12,7 +12,7 @@
 #include "CBackground.h"
 #include "CStack.h"
 #include "CDocument.h"
-#include <math.h>
+#include <cmath>
 
 
 using namespace Carlson;
@@ -366,9 +366,9 @@ void	CGraphicPart::SetSelected( bool inSelected, LEOInteger inHandleIndex )
 			}
 			else
 			{
-				LEONumber		segmentLength = sqrt( xdiff * xdiff + ydiff * ydiff );
+				LEONumber		segmentLength = ::sqrt( xdiff * xdiff + ydiff * ydiff );
 				LEONumber		slope = ydiff / xdiff;
-				LEONumber		radians = atan( slope );
+				LEONumber		radians = ::atan( slope );
 				if( radians > (M_PI * 2.0) )
 				{
 					radians -= M_PI * 2.0;
@@ -380,8 +380,8 @@ void	CGraphicPart::SetSelected( bool inSelected, LEOInteger inHandleIndex )
 				LEONumber		segStartX = startX, segStartY = startY;
 				for( currLen = leftoverLength; currLen <= segmentLength; currLen += stepSize )
 				{
-					LEONumber		newX = segStartX + currLen * cos( radians );
-					LEONumber		newY = segStartY + currLen * sin( radians );
+					LEONumber		newX = segStartX + currLen * ::cos( radians );
+					LEONumber		newY = segStartY + currLen * ::sin( radians );
 					
 					outCoordinates.push_back( newX );
 					outCoordinates.push_back( newY );

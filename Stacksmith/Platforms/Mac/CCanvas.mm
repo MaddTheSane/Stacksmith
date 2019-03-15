@@ -8,7 +8,7 @@
 
 #include "CCanvas.h"
 #include "CImageCanvas.h"
-
+#include <cmath>
 
 using namespace Carlson;
 
@@ -107,7 +107,7 @@ bool	CColor::operator ==( const CColor& inColor ) const
 {
 	const CGFloat * aComps = CGColorGetComponents(mColor);
 	const CGFloat * bComps = CGColorGetComponents(inColor.mColor);
-	return (fabs(aComps[0] - bComps[0]) < 0.001) && (fabs(aComps[1] - bComps[1]) < 0.001) && (fabs(aComps[2] - aComps[2]) < 0.001) && (fabs(aComps[3] - bComps[3]) < 0.001);
+	return (::abs(aComps[0] - bComps[0]) < 0.001) && (::abs(aComps[1] - bComps[1]) < 0.001) && (::abs(aComps[2] - aComps[2]) < 0.001) && (::abs(aComps[3] - bComps[3]) < 0.001);
 }
 
 
@@ -354,14 +354,14 @@ CPath	CCanvas::RegularPolygon( const CPoint& centerPos, const CPoint& desiredCor
 	
 	TCoordinate	delta_x = desiredCorner.GetH() - centerPos.GetH();
 	TCoordinate	delta_y = desiredCorner.GetV() - centerPos.GetV();
-	TCoordinate	startAngle = atan2(delta_y, delta_x);
-	TCoordinate r = sqrt( pow(delta_x, 2) + pow(delta_y, 2) );
+	TCoordinate	startAngle = ::atan2(delta_y, delta_x);
+	TCoordinate r = ::sqrt( ::pow(delta_x, 2) + ::pow(delta_y, 2) );
 	TCoordinate angleAdvance = (M_PI * 2) / numberOfCorners;
 	
 	for( int x = 0; x < numberOfCorners; x++ )
 	{
 		TCoordinate	a = startAngle + angleAdvance * TCoordinate(x);
-		CPoint	cornerPos( centerPos.GetH() + r * cos(a), centerPos.GetV() + r * sin(a) );
+		CPoint	cornerPos( centerPos.GetH() + r * ::cos(a), centerPos.GetV() + r * ::sin(a) );
 		if( x == 0 )
 		{
 			startPos = cornerPos;

@@ -20,6 +20,7 @@
 #include "CUndoStack.h"
 #include <sys/stat.h>
 #include <sstream>
+#include <cmath>
 
 
 using namespace Carlson;
@@ -1169,28 +1170,28 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 	if( (*ioRight) > (((long long)mStack->GetCardWidth()) -IDEAL_EDGE_DISTANCE -MAX_INNER_EDGE_SNAPPING_DISTANCE) && (partsToCorrect & ERightGrabberHitPart) )
 	{
 		xNudge = ((long long)mStack->GetCardWidth() -IDEAL_EDGE_DISTANCE) -*ioRight;
-		minXDist = llabs( xNudge );
+		minXDist = ::abs( xNudge );
 		leftGuide = mStack->GetCardWidth() -IDEAL_EDGE_DISTANCE;
 	}
 
 	if( (*ioLeft) < (MAX_INNER_EDGE_SNAPPING_DISTANCE +IDEAL_EDGE_DISTANCE) && (partsToCorrect & ELeftGrabberHitPart) )
 	{
 		xNudge = IDEAL_EDGE_DISTANCE -*ioLeft;
-		minXDist = llabs( xNudge );
+		minXDist = ::abs( xNudge );
 		leftGuide = IDEAL_EDGE_DISTANCE;
 	}
 
 	if( (*ioBottom) > (((long long)mStack->GetCardHeight()) -MAX_INNER_EDGE_SNAPPING_DISTANCE -IDEAL_EDGE_DISTANCE) && (partsToCorrect & EBottomGrabberHitPart) )
 	{
 		yNudge = ((long long)mStack->GetCardHeight() -IDEAL_EDGE_DISTANCE) -*ioBottom;
-		minYDist = llabs( yNudge );
+		minYDist = ::abs( yNudge );
 		topGuide = mStack->GetCardHeight() -IDEAL_EDGE_DISTANCE;
 	}
 	
 	if( (*ioTop) < (MAX_INNER_EDGE_SNAPPING_DISTANCE +IDEAL_EDGE_DISTANCE) && (partsToCorrect & ETopGrabberHitPart) )
 	{
 		yNudge = IDEAL_EDGE_DISTANCE -*ioTop;
-		minYDist = llabs( yNudge );
+		minYDist = ::abs( yNudge );
 		topGuide = IDEAL_EDGE_DISTANCE;
 	}
 	
@@ -1198,28 +1199,28 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 	if( (*ioRight) > (((long long)mStack->GetCardWidth()) -MAX_INNER_EDGE_SNAPPING_DISTANCE) && (partsToCorrect & ERightGrabberHitPart) )
 	{
 		xNudge = ((long long)mStack->GetCardWidth()) -*ioRight;
-		minXDist = llabs( xNudge );
+		minXDist = ::abs( xNudge );
 		leftGuide = mStack->GetCardWidth();
 	}
 
 	if( (*ioLeft) < MAX_INNER_EDGE_SNAPPING_DISTANCE && (partsToCorrect & ELeftGrabberHitPart) )
 	{
 		xNudge = -*ioLeft;
-		minXDist = llabs( xNudge );
+		minXDist = ::abs( xNudge );
 		leftGuide = 0;
 	}
 
 	if( (*ioBottom) > (((long long)mStack->GetCardHeight()) -MAX_INNER_EDGE_SNAPPING_DISTANCE) && (partsToCorrect & EBottomGrabberHitPart) )
 	{
 		yNudge = ((long long)mStack->GetCardHeight()) -*ioBottom;
-		minYDist = llabs( yNudge );
+		minYDist = ::abs( yNudge );
 		topGuide = mStack->GetCardHeight();
 	}
 	
 	if( (*ioTop) < MAX_INNER_EDGE_SNAPPING_DISTANCE && (partsToCorrect & ETopGrabberHitPart) )
 	{
 		yNudge = -*ioTop;
-		minYDist = llabs( yNudge );
+		minYDist = ::abs( yNudge );
 		topGuide = 0;
 	}
 
@@ -1228,14 +1229,14 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 	{
 		if( currPart != inMovedPart )
 		{
-			long long		currXLeftDist = llabs( currPart->GetLeft() -*ioLeft ),
-							currXRightDist = llabs( currPart->GetRight() -*ioRight ),
-							currYTopDist = llabs( currPart->GetTop() -*ioTop ),
-							currYBottomDist = llabs( currPart->GetBottom() -*ioBottom ),
-							currXLeftDist2 = llabs( currPart->GetRight() -*ioLeft ),
-							currXRightDist2 = llabs( currPart->GetLeft() -*ioRight ),
-							currYTopDist2 = llabs( currPart->GetBottom() -*ioTop ),
-							currYBottomDist2 = llabs( currPart->GetTop() -*ioBottom ),
+			long long		currXLeftDist = ::abs( currPart->GetLeft() -*ioLeft ),
+							currXRightDist = ::abs( currPart->GetRight() -*ioRight ),
+							currYTopDist = ::abs( currPart->GetTop() -*ioTop ),
+							currYBottomDist = ::abs( currPart->GetBottom() -*ioBottom ),
+							currXLeftDist2 = ::abs( currPart->GetRight() -*ioLeft ),
+							currXRightDist2 = ::abs( currPart->GetLeft() -*ioRight ),
+							currYTopDist2 = ::abs( currPart->GetBottom() -*ioTop ),
+							currYBottomDist2 = ::abs( currPart->GetTop() -*ioBottom ),
 							currIdealXLeftDist = currPart->GetLeft() -IDEAL_PART_DISTANCE -*ioRight,
 							currIdealXRightDist = currPart->GetRight() +IDEAL_PART_DISTANCE -*ioLeft,
 							currIdealYTopDist = currPart->GetTop() -IDEAL_PART_DISTANCE -*ioBottom,
@@ -1279,7 +1280,7 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 			//	the opposite of the distance variable:
 			if( (-currIdealXLeftDist) < minXDist && currIdealXLeftDist < 0 && (partsToCorrect & ERightGrabberHitPart) )
 			{
-				if( llabs( currIdealXLeftDist ) < MAX_SNAPPING_DISTANCE )
+				if( ::abs( currIdealXLeftDist ) < MAX_SNAPPING_DISTANCE )
 				{
 					xNudge = currIdealXLeftDist;
 					minXDist = currIdealXLeftDist;
@@ -1288,7 +1289,7 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 			}
 			if( currIdealXRightDist < minXDist && currIdealXRightDist >= 0 && (partsToCorrect & ELeftGrabberHitPart) )
 			{
-				if( llabs( currIdealXRightDist ) < MAX_SNAPPING_DISTANCE )
+				if( ::abs( currIdealXRightDist ) < MAX_SNAPPING_DISTANCE )
 				{
 					xNudge = currIdealXRightDist;
 					minXDist = currIdealXRightDist;
@@ -1328,7 +1329,7 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 			//	the opposite of the distance variable:
 			if( (-currIdealYTopDist) < minYDist && currIdealYTopDist < 0 && (partsToCorrect & EBottomGrabberHitPart) )
 			{
-				if( llabs( currIdealYTopDist ) < MAX_SNAPPING_DISTANCE )
+				if( ::abs( currIdealYTopDist ) < MAX_SNAPPING_DISTANCE )
 				{
 					yNudge = currIdealYTopDist;
 					minYDist = currIdealYTopDist;
@@ -1337,7 +1338,7 @@ void	CLayer::CorrectRectOfPart( CPart* inMovedPart, std::vector<CPartRef> inElig
 			}
 			if( currIdealYBottomDist < minYDist && currIdealYBottomDist >= 0 && (partsToCorrect & ETopGrabberHitPart) )
 			{
-				if( llabs( currIdealYBottomDist ) < MAX_SNAPPING_DISTANCE )
+				if( ::abs( currIdealYBottomDist ) < MAX_SNAPPING_DISTANCE )
 				{
 					yNudge = currIdealYBottomDist;
 					minYDist = currIdealYBottomDist;
